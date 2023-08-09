@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 using TaskService.Data;
 using TaskService.Interfaces;
 using TaskService.Models;
@@ -24,7 +23,7 @@ namespace TaskService.Repositories
             return await _taskServiceDbContext.Tasks.Where(e => e.Type == type).ToListAsync();
         }
 
-        public async Task<List<TaskModel>> ListAllTasksByStatus(int status)
+        public async Task<List<TaskModel>> ListAllTasksByStatus(TaskStatus status)
         {
             return await _taskServiceDbContext.Tasks.Where(e => e.Status == status).ToListAsync();
         }
@@ -37,7 +36,8 @@ namespace TaskService.Repositories
             return taskModel;
         }
 
-        public Task<TaskModel?> GetById(int id) {
+        public Task<TaskModel?> GetById(int id)
+        {
             return _taskServiceDbContext.Tasks.FirstOrDefaultAsync(_x => _x.Id == id);
         }
     }

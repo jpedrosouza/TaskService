@@ -13,6 +13,9 @@ namespace TaskService.Data.Map
             builder.Property(x => x.Description).HasMaxLength(400);
             builder.Property(x => x.Type).IsRequired().HasMaxLength(200);
             builder.Property(x => x.Status).IsRequired().HasMaxLength(200);
+            builder.Property(x => x.CreatedDate).IsRequired().HasMaxLength(20);
+            builder.Property(x => x.UpdatedDate).IsRequired().HasMaxLength(20);
+            builder.Property(x => x.DeletedDate).IsRequired().HasMaxLength(20);
         }
     }
 }

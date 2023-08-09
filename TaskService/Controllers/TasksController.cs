@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TaskService.Interfaces;
 using TaskService.Models;
 using TaskService.Repositories;
 
@@ -10,30 +11,42 @@ namespace TaskService.Controllers
     [ApiController]
     public class TasksController : ControllerBase
     {
+        private readonly ITaskRepository _taskRepository;
+
+
+        public TasksController(ITaskRepository taskRepository)
+        {
+            _taskRepository = taskRepository;
+        }
+
         // GET: api/<TasksController>
         [HttpGet]
-        public IEnumerable<TaskModel> Get()
+        public async Task<ActionResult<List<TaskModel>>> Get()
         {
-            return new TaskRepository().ListAllTasks();
+            List<TaskModel> tasks = await _taskRepository.ListAllTasks();
+            return Ok(tasks);
         }
 
         // GET api/<TasksController>/5
         [HttpGet("{id}")]
-        public TaskModel Get(int id)
+        public async Task<ActionResult<TaskModel>> Get(int id)
         {
-            return new TaskRepository().GetById(id);
-        }
+            return await _taskRepository.GetById(id);
+        }                                    
 
         // POST api/<TasksController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<TaskModel>> Post([FromBody] TaskModel task)
         {
+            await _taskRepository.CreateTask(task);
+            return Ok(task);
         }
 
         // PUT api/<TasksController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
+
         }
 
         // DELETE api/<TasksController>/5
